@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.card {
+  padding: 20px;
+  border-radius: 12px;
+  background: wheat;
+  box-shadow: 0px 0px 2px black;
+  text-overflow: clip;
+  overflow-y: clip;
+  display: inline-block;
+  height: 240px;
+}
+:root {
+  --slider-gap: 2rem;
+  --slider-snap: 50%;
+}
+.light_slider_wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.light_slider {
+  scroll-behavior: smooth;
+  flex-grow: 1;
+  grid-gap: calc(var(--slider-gap) / 2);
+  gap: calc(var(--slider-gap) / 2);
+  margin: 0;
+  scroll-padding-inline: calc(var(--slider-gap) / 2);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 25%;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; /* Needed to work on iOS Safari */
+  scroll-snap-type: mandatory;
+  -ms-scroll-snap-type: mandatory;
+  scroll-snap-points-x: repeat(100%);
+  -ms-scroll-snap-points-x: repeat(100%);
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scroll {
+  -ms-overflow-style: block; /* IE and Edge */
+  scrollbar-width: block !important; /* Firefox */
+}
+
+.light_slider > * {
+  scroll-snap-align: center;
+}
+
+.light_slider.align-start > * {
+  scroll-snap-align: start;
+}
+
+.light_slider.align-end > * {
+  scroll-snap-align: end;
+}
+
+.light_slider.vertical {
+  flex-direction: column;
+  scroll-snap-type: y mandatory;
+}
+
+.light_slider_wrapper .arrow {
+  position: absolute;
+  top: 50%;
+}
+
+.light_slider_wrapper .arrow.left {
+  translate: 50% -50%;
+  left: 0;
+}
+
+.light_slider_wrapper .arrow.right {
+  translate: -50% -50%;
+  right: 0;
+}
