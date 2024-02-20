@@ -2,6 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  border: none;
+  outline: none;
+}
+
+body {
+  height: 200vh;
 }
 
 .card {
@@ -14,13 +20,15 @@
   display: inline-block;
   height: 240px;
 }
-:root {
-  --slider-gap: 2rem;
-  --slider-snap: 50%;
-}
+
 .light_slider_wrapper {
   width: 100%;
   position: relative;
+  --slider-dot: 1.1rem;
+  --light-slider-theme: rgb(172, 247, 193);
+  --light-slider-theme-secondary:rgb(140, 201, 158);
+  --slider-gap: 2rem;
+  --slider-snap: 50%;
 }
 
 .light_slider {
@@ -32,7 +40,6 @@
   scroll-padding-inline: calc(var(--slider-gap) / 2);
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 25%;
   overflow-x: auto;
   white-space: nowrap;
   scroll-snap-type: x mandatory;
@@ -41,6 +48,9 @@
   -ms-scroll-snap-type: mandatory;
   scroll-snap-points-x: repeat(100%);
   -ms-scroll-snap-points-x: repeat(100%);
+  scroll-timeline-name: --slider-scroll;
+  scroll-timeline-axis: inline;
+  padding-bottom: calc(var(--slider-dot) * 1.35);
 }
 
 .hide-scroll::-webkit-scrollbar {
@@ -72,6 +82,7 @@
 .light_slider_wrapper .arrow {
   position: absolute;
   top: 50%;
+  cursor: pointer;
 }
 
 .light_slider_wrapper .arrow.left {
@@ -82,4 +93,52 @@
 .light_slider_wrapper .arrow.right {
   translate: -50% -50%;
   right: 0;
+}
+
+.light_slider_wrapper .progress {
+  background: var(--light-slider-theme);
+  height: 4px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: progressAnim;
+  animation-timeline: --slider-scroll;
+  transform-origin: 0 -50%;
+}
+
+.light_slider_wrapper .page-dot {
+  border-radius: 100%;
+  cursor: pointer;
+  width: var(--slider-dot);
+  aspect-ratio: 1/1;
+  background: var(--light-slider-theme);
+  transition: 0.15s ease-in-out;
+}
+
+.light_slider_wrapper .page-dot.current {
+  background: var(--light-slider-theme-secondary)
+}
+
+.light_slider_wrapper .page-dot:hover {
+  background: var(--light-slider-theme-secondary);
+}
+
+.light_slider_wrapper .dot-wrapper {
+  display: flex;
+  gap: calc(var(--slider-dot) / 2);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  justify-content: center;
+}
+
+@keyframes progressAnim {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
 }

@@ -7,9 +7,21 @@ const arr = new Array(6).fill(0)
 function App() {
 
   return (
-    <Slider buttons>
-      {arr.map((_, index) => <Card key={index} />)}
-    </Slider>
+    <>
+      <Slider config={{
+        buttons: true,
+        progress: true,
+        hideScroll: true,
+        dots: true,
+        perPage: 5
+      }}>
+        {arr.map((_, index) => <Card key={index} />)}
+      </Slider>
+      <div className='scroll'>
+        <div />
+        <div className='scroll-progress' />
+      </div>
+    </>
   )
 }
 
