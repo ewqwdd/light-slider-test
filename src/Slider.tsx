@@ -19,6 +19,7 @@ interface Options {
   hideScroll?: boolean;
   perPage?: number;
   dots?: boolean;
+  scrollPageOnEnd?: boolean
 }
 
 interface SliderProps extends HTMLAttributes<HTMLDivElement> {
@@ -27,7 +28,7 @@ interface SliderProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Slider({ children, config, className, ...props }: SliderProps) {
-  const { buttons, leftArrow, rightArrow, progress, hideScroll, perPage, dots } = config ?? {};
+  const { buttons, leftArrow, rightArrow, progress, hideScroll, perPage, dots, scrollPageOnEnd } = config ?? {};
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
@@ -71,25 +72,32 @@ export default function Slider({ children, config, className, ...props }: Slider
   }, []);
   const onWheel = useCallback(
     (e: WheelEventReact) => {
+      if (!slider.current) return
       if (isHovered) {
-        if (
-          e.deltaY > 0 &&
-          Number(slider.current?.scrollLeft) + Number(slider.current?.clientWidth) ===
-            slider.current?.scrollWidth
-        ) {
-          mouseOut();
-        } else if (e.deltaY < 0 && slider.current?.scrollLeft === 0) {
-          mouseOut();
+        let delta
+        if (e.deltaX && e.deltaX!==-0) {
+          delta = e.deltaX
         } else {
-          slider.current?.scrollTo({
-            left:
-              slider.current.scrollLeft +
-              ((slider.current.scrollWidth / slider.current.childNodes.length) * e.deltaY) / 100,
-          });
+          delta = e.deltaY
+        }
+        
+        if (
+          delta > 0 &&
+          Number(slider.current?.scrollLeft) + Number(slider.current?.clientWidth) >=
+            slider.current?.scrollWidth - 1
+        ) {
+          scrollPageOnEnd && mouseOut();
+        } else if (delta < 0 && slider.current?.scrollLeft === 0) {
+          scrollPageOnEnd && mouseOut();
+        } else {
+          const offset = slider.current.scrollLeft + slider.current.scrollWidth / slider.current.childNodes.length
+          slider.current.scrollTo({
+            left: delta >= 0 ? offset : -offset
+          })
         }
       }
     },
-    [isHovered, mouseOut]
+    [isHovered, mouseOut, scrollPageOnEnd]
   );
 
   const optimizedWheel = useTrothling(onWheel, 100);
