@@ -5,8 +5,10 @@ export const useTrothling = <T extends unknown[]>(fn: ((...args: T) => void), ti
 
     const func = useCallback((...args: T) => {
         if (!isBlocked.current) {
-            fn(...args)
+            console.log(isBlocked.current)
             isBlocked.current = true
+            fn(...args)
+            console.log(isBlocked.current, time)
             setTimeout(() => {
                 isBlocked.current = false
             }, time)

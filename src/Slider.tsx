@@ -43,7 +43,7 @@ export default function Slider({ children, config, className, ...props }: Slider
   }, []);
 
   const mouseOver = useCallback(() => {
-    document.addEventListener("wheel", preventDefault, { passive: false });
+    document.addEventListener("wheel", preventDefault, { passive: false,  });
     setIsHovered(true);
   }, [preventDefault]);
 
@@ -100,7 +100,7 @@ export default function Slider({ children, config, className, ...props }: Slider
     [isHovered, mouseOut, scrollPageOnEnd]
   );
 
-  const optimizedWheel = useTrothling(onWheel, 100);
+  const optimizedWheel = useTrothling(onWheel, 1000);
 
   let left = null;
   let right = null;
@@ -172,7 +172,7 @@ export default function Slider({ children, config, className, ...props }: Slider
         className={sliderClassName}
         ref={slider}
         style={sliderStyle}
-        onScroll={dots ? optimizedScroll : undefined}
+        // onScroll={dots ? optimizedScroll : undefined}
       >
         {progress && <div className="progress" />}
         {children}

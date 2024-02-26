@@ -13,7 +13,7 @@ function App() {
         progress: true,
         hideScroll: true,
         dots: true,
-        perPage: 5
+        perPage: 1
       }}>
         {arr.map((_, index) => <Card key={index} />)}
       </Slider>
